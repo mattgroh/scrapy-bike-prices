@@ -12,6 +12,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import time
 import random
+from urls import urls
 
 
 class MySpider(CrawlSpider):
@@ -20,8 +21,7 @@ class MySpider(CrawlSpider):
     and pull out content for each Craigslist Ad.
     """
 
-    r_rows = "//ul[@class='rows']/*"
-    r_ad_urls = "//li/a/@href"
+    
 
     name = 'craigslist'
     section = 'bia'
@@ -46,6 +46,10 @@ class MySpider(CrawlSpider):
         """
         This function finds all ad links for the last 24 hours and crawls those ads
         """
+        r_rows = "//ul[@class='rows']/*"
+        r_ad_urls = "//li/a/@href"
+        re_posttime = "//li/p/time"
+
         self.logger.info('You are now crawling: %s', response.url)
         hxs = Selector(response)
         contents = hxs.xpath(r_rows)
@@ -56,7 +60,7 @@ class MySpider(CrawlSpider):
         last24 = True
         while(last24==True):
             for i in range(0,rows):
-                hours_since_post = (datetime.now() - datetime.strptime(content.xpath("//p/span/span/time/@datetime").extract()[i], "%Y-%m-%d %H:%M")).seconds/(60*60)
+                hours_since_post = (datetime.now() - datetime.strptime(re.sub('".*',"",re.sub('.*datetime="',"",content.xpath(re_posttime).extract()[i])), "%Y-%m-%d %H:%M")).seconds/(60*60)
                 if hours_since_post > 24:
                     last24 = False
                 else:
