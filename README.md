@@ -11,8 +11,9 @@ Aggregate data can tell fascinating stories. Craigslist is the most frequently u
 
 ## Handling Shifting Structure
 
-`scrapy shell website`
+You may need to handle a shifting url structure from a website you crawl, so you'll want to use scrapy shell to test out your new parsers.
 
+`scrapy shell url`
 
 ## Let's Crawl
 
@@ -22,8 +23,10 @@ If you want to test the crawl locally, run scrapy
 
 In order to avoid getting blocked by the websites you are crawling, you'll want to rotate the IP addresses that you use to access the website. Scraping Hub is a great service that provides an API to do this for free. Go to [Scrapinghub](https://doc.scrapinghub.com/shub.html) to learn more.  
 
-`pip install shub`
-`shub login`
+```
+pip install shub
+shub login
+```
 
 Add your credentials and S3 bucket
 
@@ -33,9 +36,11 @@ echo creds={\"aws_id\":\"xx\", \"aws_secret\":\"xx\", \"s3\":\"s3_bucket_url\"} 
 cd ..
 ```
 
-`shub deploy`
-`shub schedule craigslist`
-`shub items [crawl_id]`
+```
+shub deploy
+shub schedule craigslist
+shub items [crawl_id]
+```
 
 ## User Agent
 
